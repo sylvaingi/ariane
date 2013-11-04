@@ -1,0 +1,5 @@
+APP_NAME=myapp
+SSH_HOST=username@host
+APPS_HOME=/home/meteor/apps
+#Optional, required if username is not the owner of the APPS_HOME folder
+APPS_USER=meteor
