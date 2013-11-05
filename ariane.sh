@@ -22,22 +22,40 @@ echo -e "\nBrace yourself, ariane is going to launch your Meteor....\n"
 
 cleanup
 
+
 echo "====Demeteorizing===="
 demeteorizer -o $BUNDLE_DIR
 
-echo -e "\n====New Relic agent===="
-pushd $BUNDLE_DIR > /dev/null
-mv main.js app.js
-echo -e "require('newrelic');\n" | cat - app.js > /tmp/app.js && mv /tmp/app.js .
-echo "OK"
+NEWRELIC_NPM_COMMAND="";
+if [ $NEWRELIC_AGENT == "true" ];
+then
+    echo -e "\n====New Relic agent===="
+    pushd $BUNDLE_DIR > /dev/null
+    
+    echo -e "require('newrelic');\n" | cat - main.js > /tmp/main.js && mv /tmp/main.js .
+    
+    popd > /dev/null
+
+    NEWRELIC_NPM_COMMAND="npm install newrelic;"
+    
+    echo "OK"
+fi;
+
 
 echo -e "\n====Bundling===="
+pushd $BUNDLE_DIR > /dev/null
+
+mv main.js app.js
 tar czf ../$BUNDLE_FILE *
+
 popd > /dev/null
+
 echo "Bundle ready"
+
 
 echo -e "\n====Uploading===="
 scp $BUNDLE_FILE $SSH_HOST:/tmp
+
 
 echo -e "\n=====Deploying===="
 COMMANDS="    
@@ -51,7 +69,7 @@ COMMANDS="
     mkdir tmp;
     
     npm install;
-    npm install newrelic;
+    $NEWRELIC_NPM_COMMAND
     
     touch tmp/restart.txt;
 "
