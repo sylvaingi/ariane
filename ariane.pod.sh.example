@@ -1,6 +1,11 @@
 APP_NAME=myapp
-NEWRELIC_AGENT=true
-SSH_HOST=username@host
+SSH_HOST=host
+SSH_USER= username
 APPS_HOME=/home/meteor/apps
+
 #Optional, required if username is not the owner of the APPS_HOME folder
 APPS_USER=meteor
+
+#Optional, New Relic configuration
+NEWRELIC_AGENT=true
+NEWRELIC_API_KEY=secret
