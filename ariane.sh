@@ -66,7 +66,7 @@ function bundle {
 
 function upload {
     echo -e "\n====Uploading===="
-    scp $BUNDLE_FILE $SSH_HOST:/tmp
+    scp $BUNDLE_FILE $SSH_USER@$SSH_HOST:/tmp
 }
 
 function deploy {
